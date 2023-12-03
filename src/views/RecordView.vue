@@ -186,32 +186,30 @@ export default {
 
 <style>
 .container {
-  display: flex; /* 启用 Flexbox */
-  justify-content: space-between; /* 两个子元素之间留有空间 */
-  align-items: flex-start; /* 子元素在交叉轴的起点对齐 */
-  margin: 20px; /* 容器的外边距 */
+  display: flex;
+  flex-direction: column; /* 默认为列方向 */
+  /* 其他样式保持不变 */
 }
 
-.calendar,
-.form {
-  flex: 1; /* 使两个子元素平均分配空间 */
-  margin: 10px; /* 子元素的外边距 */
-}
+@media (min-width: 600px) { /* 假设600px为手机和桌面的分界点 */
+  .container {
+    flex-direction: row; /* 桌面设备上使用行方向 */
+  }
 
-.calendar {
-  margin: 0 auto; /* 上下保持0，左右自动调整以居中 */
-  max-width: 60%; /* 最大宽度，根据需要调整 */
-  padding: 0 20px; /* 内边距，增加左右空白区域 */
-  margin-bottom: 20px; /* 根据需要调整间距 */
-}
+  .calendar,
+  .form {
+    flex: 1;
+  }
 
-.form {
-  /* 表单样式 */
-  max-width: 40%; /* 最大宽度，根据需要调整 */
-  margin: 0 auto; /* 居中显示 */
-  padding: 20px; /* 内边距 */
-  border: 1px solid #ccc; /* 边框 */
-  border-radius: 10px; /* 圆角边框 */
+  .calendar {
+    max-width: 60%;
+    padding: 0 20px;
+    margin-bottom: 20px;
+  }
+
+  .form {
+    max-width: 40%;
+  }
 }
 
 form input[type="text"],
