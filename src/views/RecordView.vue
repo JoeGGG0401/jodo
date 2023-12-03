@@ -3,6 +3,7 @@
     <div class="calendar">
       <vue-cal
         class="vuecal--green-theme"
+        events-on-month-view="short"
         :events="events"
         locale="zh-cn"
         :disable-views="['years', 'year']"
@@ -275,4 +276,16 @@ form button:hover {
 .vuecal__event-content {
   font-style: italic;
 }
+
+.vuecal--month-view .vuecal__cell {height: 150px;}
+
+.vuecal--month-view .vuecal__cell-content {
+  justify-content: flex-start;
+  height: 100%;
+  align-items: flex-end;
+}
+
+.vuecal--month-view .vuecal__cell-date {padding: 0px;}
+.vuecal--month-view .vuecal__no-event {display: none;}
+
 </style>
