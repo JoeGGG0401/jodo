@@ -7,7 +7,7 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: HomeView
+    component: RecordView
   },
   {
     path: '/about',
