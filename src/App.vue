@@ -1,7 +1,7 @@
 <template>
   <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+    <router-link to="/record">我的记录</router-link> |
+    <router-link to="/about">使用指南</router-link>
   </nav>
   <router-view/>
 </template>
