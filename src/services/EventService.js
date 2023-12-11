@@ -1,4 +1,4 @@
-import db from "../firebase"; // 确保这是正确的路径
+import { db } from "../firebase"; // 确保这是正确的路径
 import { addDoc, collection, getDocs } from "firebase/firestore";
 
 class EventService {

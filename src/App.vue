@@ -1,10 +1,22 @@
 <template>
-  <nav>
-    <router-link to="/record">我的记录</router-link> |
-    <router-link to="/about">使用指南</router-link>
-  </nav>
-  <router-view/>
+  <v-app>
+    <div id="app">
+      <Header />
+      <router-view />
+    </div>
+  </v-app>
 </template>
+
+<script>
+import Header from "./components/Header.vue";
+
+export default {
+  name: "App",
+  components: {
+    Header,
+  },
+};
+</script>
 
 <style>
 #app {
@@ -22,6 +34,7 @@ nav {
 nav a {
   font-weight: bold;
   color: #2c3e50;
+  text-decoration: none; 
 }
 
 nav a.router-link-exact-active {
