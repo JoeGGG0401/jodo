@@ -29,31 +29,30 @@
           >
         </template>
       </vue-cal>
-      <v-dialog v-model="showDialog">
-        <v-card>
-          <v-card-title>
+      <div v-if="showDialog" class="dialog-backdrop" @click="closeDialog"></div>
+      <div class="dialog" v-if="showDialog">
+        <div class="card">
+          <div class="card-title">
             <span>{{ selectedEvent.title }}</span>
-            <v-spacer />
-            <strong>{{
-              selectedEvent.start && selectedEvent.start.format("YYYY/MM/DD")
-            }}</strong>
-          </v-card-title>
-          <v-card-text>
+            <span class="spacer"></span>
+            <strong v-if="selectedEvent.start">
+              {{ selectedEvent.start.format("YYYY/MM/DD") }}
+            </strong>
+          </div>
+          <div class="card-text">
             <strong>记录详情:</strong>
             <ul>
-              <li>
-                开始时间:
-                {{ selectedEvent.start && selectedEvent.start.formatTime() }}
+              <li v-if="selectedEvent.start">
+                开始时间: {{ selectedEvent.start.formatTime() }}
               </li>
-              <li>
-                结束时间:
-                {{ selectedEvent.end && selectedEvent.end.formatTime() }}
+              <li v-if="selectedEvent.end">
+                结束时间: {{ selectedEvent.end.formatTime() }}
               </li>
-              <p v-html="selectedEvent.contentFull" />
+              <p v-html="selectedEvent.contentFull"></p>
             </ul>
-          </v-card-text>
-        </v-card>
-      </v-dialog>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="form">
       <form @submit.prevent="addEvent">
@@ -126,6 +125,9 @@ export default {
     },
   },
   methods: {
+    closeDialog() {
+      this.showDialog = false;
+    },
     onEventClick(event, e) {
       this.selectedEvent = event;
       this.showDialog = true;
@@ -191,7 +193,8 @@ export default {
   /* 其他样式保持不变 */
 }
 
-@media (min-width: 600px) { /* 假设600px为手机和桌面的分界点 */
+@media (min-width: 600px) {
+  /* 假设600px为手机和桌面的分界点 */
   .container {
     flex-direction: row; /* 桌面设备上使用行方向 */
   }
@@ -275,7 +278,9 @@ form button:hover {
   font-style: italic;
 }
 
-.vuecal--month-view .vuecal__cell {height: 150px;}
+.vuecal--month-view .vuecal__cell {
+  height: 150px;
+}
 
 .vuecal--month-view .vuecal__cell-content {
   justify-content: flex-start;
@@ -283,7 +288,45 @@ form button:hover {
   align-items: flex-end;
 }
 
-.vuecal--month-view .vuecal__cell-date {padding: 0px;}
-.vuecal--month-view .vuecal__no-event {display: none;}
+.vuecal--month-view .vuecal__cell-date {
+  padding: 0px;
+}
+.vuecal--month-view .vuecal__no-event {
+  display: none;
+}
 
+.dialog-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* 半透明黑色背景 */
+  backdrop-filter: blur(5px); /* 模糊效果 */
+  z-index: 99; /* 确保在弹窗下方 */
+}
+
+.dialog {
+  background-color: #f8f8f8;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  border-radius: 5px;
+  padding: 20px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+}
+
+.card-title {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.card-text {
+  font-size: 14px;
+  color: #333;
+}
 </style>
