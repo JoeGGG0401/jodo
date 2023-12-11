@@ -268,7 +268,7 @@ form button:hover {
   display: inline-block;
   margin-bottom: 12px;
   padding-bottom: 12px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2); 
 }
 
 .vuecal__event-content {
