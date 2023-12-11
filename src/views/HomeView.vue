@@ -43,7 +43,7 @@ export default {
 .hue {
   position: fixed; /* 改为fixed以覆盖整个屏幕而不影响其他内容 */
   left: 0;
-  top: 44px;
+  top: 62px;
   width: 100vw;
   height: 100vh;
   opacity: 1;
@@ -78,6 +78,7 @@ export default {
   margin-bottom: 10px;
   font-size: 2.5em;
   color: #333; /* 或您喜欢的颜色 */
+  margin-left: 10px;
 }
 
 .description {

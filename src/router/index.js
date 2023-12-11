@@ -2,10 +2,18 @@ import { createRouter, createWebHashHistory } from "vue-router";
 import firebase from "firebase/app";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase"; // 确保路径正确
+// 导入 Firestore 相关函数
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { db } from "../firebase"; // 确保你有一个 db 实例的导出
+
 import HomeView from "../views/HomeView.vue";
 import RecordView from "../views/RecordView.vue";
 import LoginView from "../views/LoginView.vue";
 import LogoutView from "../views/LogoutView.vue";
+import MySpaceView from '../views/MySpaceView.vue';
+import SearchResultView from '../views/SearchResultView.vue';
+
+
 
 const routes = [
   {
@@ -26,6 +34,19 @@ const routes = [
     meta: { requiresAuth: true }, // 只有认证用户才能访问
   },
   {
+    path: "/myspace",
+    name: "myspace",
+    component: MySpaceView,
+    meta: { requiresAuth: true }, // 只有认证用户才能访问
+  },
+  {
+    path: '/search/:query',  // 添加 :query 作为路由参数
+    name: 'search',
+    component: SearchResultView,
+    props: true,  // 确保启用了 props
+    meta: { requiresAuth: true }
+  },
+  {
     path: "/login",
     name: "login",
     component: LoginView,
@@ -42,15 +63,24 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((to, from, next) => {
-  onAuthStateChanged(auth, (user) => {
-    const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
-    if (requiresAuth && !user) {
-      next("/login"); // 如果需要认证但用户未登录，则重定向到登录页面
-    } else {
-      next(); // 否则正常导航
+router.beforeEach(async (to, from, next) => {
+  const user = auth.currentUser;
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+
+  if (requiresAuth && !user) {
+    next("/login");
+  } else {
+    if (user) {
+      const userDocRef = doc(db, "users", user.uid);
+      const userDoc = await getDoc(userDocRef);
+      if (!userDoc.exists()) {
+        await setDoc(userDocRef, { email: user.email, name: user.displayName });
+      }
     }
-  });
+
+    next();
+  }
 });
+
 
 export default router;

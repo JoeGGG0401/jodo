@@ -90,7 +90,8 @@
 import VueCal from "vue-cal";
 import "vue-cal/dist/vuecal.css";
 import moment from "moment";
-import EventService from "../services/EventService";
+import LogService from "../services/LogService";
+import { auth } from "../firebase"; // 确保路径正确
 
 export default {
   components: {
@@ -137,40 +138,47 @@ export default {
     },
     async fetchEvents() {
       try {
-        const events = await EventService.getAll();
-        this.events = events;
+        const user = auth.currentUser;
+        if (user) {
+          const events = await LogService.getUserLogs(user.uid);
+          this.events = events.map((event) => {
+            event.start = moment(event.start).toDate();
+            event.end = event.end ? moment(event.end).toDate() : null;
+            return event;
+          });
+        }
       } catch (error) {
         console.error("Error fetching events: ", error);
       }
     },
     async addEvent() {
-      // 转换开始和结束时间格式
-      const formattedStart = this.formatDateTime(this.newEvent.start);
-      const formattedEnd = this.formatDateTime(this.newEvent.end);
-
-      console.log(formattedStart);
-      console.log(formattedEnd);
-
-      // 添加事件
-      var data = {
-        title: this.newEvent.title,
-        start: formattedStart,
-        end: formattedEnd,
-        class: this.newEvent.class,
-        contentFull: this.newEvent.contentFull,
-        content: "点击查看详情🔎",
-      };
-
       try {
-        await EventService.create(data);
-        console.log("Created new item successfully!");
-        // 可以在此处更新事件列表
-        this.fetchEvents();
+        const user = auth.currentUser;
+        if (user) {
+          const formattedStart = this.formatDateTime(this.newEvent.start);
+          const formattedEnd = this.formatDateTime(this.newEvent.end);
+
+          const data = {
+            title: this.newEvent.title,
+            start: formattedStart,
+            end: formattedEnd,
+            class: this.newEvent.class,
+            contentFull: this.newEvent.contentFull,
+            content: "点击查看详情🔎",
+          };
+
+          await LogService.createLog(user.uid, data);
+          this.fetchEvents(); // 重新获取事件以更新视图
+        }
       } catch (e) {
-        console.log(e);
+        console.error("Error adding event: ", e);
       }
 
       // 重置表单
+      this.resetNewEvent();
+    },
+
+    resetNewEvent() {
       this.newEvent = {
         title: "",
         start: "",
@@ -309,7 +317,7 @@ form button:hover {
 .dialog {
   background-color: #f8f8f8;
   border: 1px solid #e0e0e0;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   border-radius: 5px;
   padding: 20px;
   position: fixed;
@@ -317,6 +325,8 @@ form button:hover {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 100;
+  width: 66%;
+  height: 66%;
 }
 
 .card-title {

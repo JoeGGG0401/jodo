@@ -6,24 +6,31 @@
 </template>
 
 <script>
-import { auth } from "../firebase"; // 确保路径正确
+import { auth, db } from "../firebase"; // 确保路径正确
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 
 export default {
   name: "LoginView",
   methods: {
-    signInWithGoogle() {
+    async signInWithGoogle() {
       const provider = new GoogleAuthProvider();
-      signInWithPopup(auth, provider)
-        .then((result) => {
-          // 处理登录成功
-          console.log("登录成功", result.user);
-          this.$router.push("/record");
-        })
-        .catch((error) => {
-          // 处理登录失败
-          console.error("登录失败", error);
-        });
+      try {
+        const result = await signInWithPopup(auth, provider);
+        const user = result.user;
+
+        // 检查用户是否已在用户表中
+        const userDocRef = doc(db, "users", user.uid);
+        const userDoc = await getDoc(userDocRef);
+        if (!userDoc.exists()) {
+          // 如果用户不存在，则创建一个新用户记录
+          await setDoc(userDocRef, { email: user.email, name: user.displayName });
+        }
+
+        this.$router.push("/record");
+      } catch (error) {
+        console.error("登录失败", error);
+      }
     },
   },
 };
