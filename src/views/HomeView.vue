@@ -49,6 +49,7 @@ export default {
   opacity: 1;
   background: linear-gradient(-45deg, #f5f5f5,#97edc6, #1ac5c5);
   animation: hueRotate 5s infinite linear;
+  z-index: -1; /* 设置为负值以确保它位于内容之下 */
 }
 
 .container {

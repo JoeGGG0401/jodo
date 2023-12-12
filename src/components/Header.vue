@@ -11,13 +11,22 @@
       <button @click="search">🔍</button>
     </div>
 
-    <!-- 导航链接 -->
-    <div class="nav-links">
-      <router-link v-if="user" to="/myspace">我的空间</router-link>
-      <router-link v-if="user" to="/record">我的记录</router-link>
-      <router-link to="/about">开发文档</router-link>
-      <router-link v-if="!user" to="/login">登录</router-link>
-      <router-link v-if="user" to="/logout">登出</router-link>
+    <!-- 用户菜单 -->
+    <div class="user-menu">
+      <div class="nav-links">
+        <router-link v-if="!user" to="/about">开发文档</router-link>
+        <button v-if="user" @click="toggleMenu">
+          {{ user.displayName || user.email }}
+        </button>
+        <router-link v-else to="/login">登录</router-link>
+
+        <div v-if="menuVisible" class="dropdown-menu">
+          <router-link to="/myspace">我的空间</router-link>
+          <router-link to="/record">我的记录</router-link>
+          <router-link to="/about">开发文档</router-link>
+          <router-link to="/logout">登出</router-link>
+        </div>
+      </div>
     </div>
   </nav>
 </template>
@@ -33,11 +42,13 @@ export default {
       searchText: "",
       searchResults: [],
       user: null,
+      menuVisible: false,
     };
   },
   created() {
     this.unsubscribe = onAuthStateChanged(auth, (u) => {
       this.user = u;
+      this.menuVisible = false; // 添加这行
     });
   },
   unmounted() {
@@ -53,6 +64,9 @@ export default {
           params: { query: this.searchText },
         });
       }
+    },
+    toggleMenu() {
+      this.menuVisible = !this.menuVisible;
     },
   },
 };
@@ -98,10 +112,51 @@ export default {
 }
 
 .nav-links {
-  /* 添加所需样式 */
+  display: flex;
+  align-items: center; /* 确保子元素在垂直方向上居中 */
+  height: 36px; /* 设置容器的固定高度 */
 }
 
 .nav-links a {
   margin: 0 10px;
+}
+
+.nav-links button {
+  margin: 0 10px;
+}
+
+
+.user-menu {
+  position: relative;
+}
+
+.nav-links button {
+  background: none;
+  border: none;
+  padding: 5px 10px;
+  font-size: 16px; /* 调整为合适的字体大小 */
+  cursor: pointer;
+}
+
+.user-menu button:hover {
+  text-decoration: none;
+  color: #42b983;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  z-index: 100; /* 确保这个值高于.hue的z-index */
+}
+
+.dropdown-menu a {
+  margin-bottom: 10px;
 }
 </style>
