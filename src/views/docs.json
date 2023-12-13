@@ -2,7 +2,7 @@
     {
         "key": 3,
         "title": "TODO LIST",
-        "content": "1. (DONE)header 需要变成自适应（header 中的user 相关的操作变成一个 dropdown menu \n\n 2. 用户搜索到了用户后，可以对这个提出 follow 申请，目标用户会收到 notification，点击 notification 可以选择接收或者拒绝，接收后则在前者的 following list 里面加一个 user_uid，在后者的 follower list 里面加一个 user_uid \n\n 3. user 应该有一个 profile 页面，用来修改自己的名字和头像"
+        "content": "- 用户搜索到了用户后，可以对这个提出 follow 申请，目标用户会收到 notification，点击 notification 可以选择接收或者拒绝，接收后则在前者的 following list 里面加一个 user_uid，在后者的 follower list 里面加一个 user_uid \n\n - 应该支持英文版"
     },
     {
         "key": 1,
