@@ -155,4 +155,13 @@ form button:hover {
     padding: 10px; /* 在较小屏幕上减少内边距 */
   }
 }
+
+@media (max-width: 600px) {
+  input[type="datetime-local"] {
+    font-size: 16px; /* 增大字体大小 */
+    padding: 12px; /* 增加内边距 */
+    border: 1px solid #ccc; /* 明显的边框 */
+    border-radius: 4px; /* 圆角边框 */
+  }
+}
 </style>

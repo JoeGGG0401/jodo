@@ -15,7 +15,7 @@
     <div class="user-menu">
       <div class="nav-links">
         <router-link v-if="!user" to="/about">开发文档</router-link>
-        <button v-if="user" @click="toggleMenu">
+        <button v-if="user" ref="dropdown" @click="toggleMenu">
           <img v-if="userData && userData.photoURL" :src="userData.photoURL" alt="头像" class="user-avatar">
           <span v-else>{{ getInitial(userData?.name || user.email) }}</span>
 
@@ -68,12 +68,25 @@ export default {
       }
     });
   },
+  mounted() {
+    // 添加全局点击事件监听器
+    document.addEventListener('click', this.handleOutsideClick);
+  },
+
   unmounted() {
+    document.removeEventListener('click', this.handleOutsideClick);
+
     if (this.unsubscribe) {
       this.unsubscribe();
     }
   },
   methods: {
+    handleOutsideClick(e) {
+      // 检查点击是否在下拉菜单或触发按钮之外
+      if (this.menuVisible && !this.$refs.dropdown.contains(e.target)) {
+        this.menuVisible = false;
+      }
+    },
     search() {
       if (this.searchText) {
         this.$router.push({
