@@ -25,6 +25,7 @@
         <div v-if="menuVisible" class="dropdown-menu">
           <router-link to="/myspace">我的空间</router-link>
           <router-link to="/record">我的记录</router-link>
+          <router-link to="/event-form">添加记录</router-link>
           <router-link to="/user-profile">我的名片</router-link>
           <router-link to="/about">开发文档</router-link>
           <router-link to="/logout">登出</router-link>

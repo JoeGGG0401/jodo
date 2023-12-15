@@ -40,4 +40,18 @@ nav a {
 nav a.router-link-exact-active {
   color: #42b983;
 }
+
+button {
+  width: 100%;
+  padding: 10px;
+  background-color: #42b983;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #367b62;
+}
+
 </style>

@@ -1,11 +1,14 @@
 <template>
   <div class="container">
+    <div class="button-container">
+      <button @click="goToFormPage" class="goToFormPageButton">添加事件</button>
+    </div>
+
     <div class="calendar">
       <vue-cal
         class="vuecal--green-theme"
         events-on-month-view="short"
         :events="events"
-        locale="zh-cn"
         :disable-views="['years', 'year']"
         :time-from="0 * 60"
         :time-to="24 * 60"
@@ -54,35 +57,6 @@
         </div>
       </div>
     </div>
-    <div class="form">
-      <form @submit.prevent="addEvent">
-        <input v-model="newEvent.title" type="text" placeholder="标题" />
-        <input
-          v-model="newEvent.start"
-          type="datetime-local"
-          placeholder="开始时间"
-        />
-        <input
-          v-model="newEvent.end"
-          type="datetime-local"
-          placeholder="结束时间"
-        />
-
-        <select v-model="newEvent.class">
-          <option value="work">工作记录</option>
-          <option value="break">休息记录</option>
-          <option value="sleep">睡眠记录</option>
-        </select>
-
-        <v-md-editor
-          v-model="newEvent.contentFull"
-          :placeholder="contentFullPlaceholder"
-          height="400px"
-        ></v-md-editor>
-
-        <button type="submit">添加记录</button>
-      </form>
-    </div>
   </div>
 </template>
 
@@ -111,21 +85,10 @@ export default {
       },
     };
   },
-  computed: {
-    contentFullPlaceholder() {
-      switch (this.newEvent.class) {
-        case "work":
-          return "请输入工作记录详情..\n - 哪项任务？\n - 多长时间？\n - 自我察觉 \n - 自我认同";
-        case "break":
-          return "请输入休息记录详情...\n - 刚才在做？\n - 我想在要通过什么方式休息？\n - 收尾动作是？ \n - 准备继续什么工作？ \n - 门槛行动？";
-        case "sleep":
-          return "请输入睡眠记录详情... \n - 睡前准备 \n - 起床门槛行动？ \n - 起来后准备做？ \n - 我感觉？";
-        default:
-          return "";
-      }
-    },
-  },
   methods: {
+    goToFormPage() {
+      this.$router.push("/event-form"); // 假设您的表单页面的路由是 /event-form
+    },
     closeDialog() {
       this.showDialog = false;
     },
@@ -151,101 +114,31 @@ export default {
         console.error("Error fetching events: ", error);
       }
     },
-    async addEvent() {
-      try {
-        const user = auth.currentUser;
-        if (user) {
-          const formattedStart = this.formatDateTime(this.newEvent.start);
-          const formattedEnd = this.formatDateTime(this.newEvent.end);
-
-          const data = {
-            title: this.newEvent.title,
-            start: formattedStart,
-            end: formattedEnd,
-            class: this.newEvent.class,
-            contentFull: this.newEvent.contentFull,
-            content: "点击查看详情🔎",
-          };
-
-          await LogService.createLog(user.uid, data);
-          this.fetchEvents(); // 重新获取事件以更新视图
-        }
-      } catch (e) {
-        console.error("Error adding event: ", e);
-      }
-
-      // 重置表单
-      this.resetNewEvent();
-    },
-
-    resetNewEvent() {
-      this.newEvent = {
-        title: "",
-        start: "",
-        end: "",
-        class: "work",
-        contentFull: "",
-      };
-    },
-    formatDateTime(dateTime) {
-      return moment(dateTime).format("YYYY-MM-DD HH:mm");
-    },
   },
 };
 </script>
 
 <style>
+.goToFormPageButton {
+  color: #fff;
+}
+
+.button-container {
+  padding: 10px;
+  flex-direction: row;
+  align-content: flex-end;
+}
+
 .container {
   display: flex;
-  flex-direction: column; /* 默认为列方向 */
-  /* 其他样式保持不变 */
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+  max-width: 800px; /* 限制最大宽度 */
 }
 
-@media (min-width: 600px) {
-  /* 假设600px为手机和桌面的分界点 */
-  .container {
-    flex-direction: row; /* 桌面设备上使用行方向 */
-  }
-
-  .calendar,
-  .form {
-    flex: 1;
-  }
-
-  .calendar {
-    max-width: 60%;
-    padding: 0 20px;
-    margin-bottom: 20px;
-  }
-
-  .form {
-    max-width: 40%;
-  }
-}
-
-form input[type="text"],
-form input[type="datetime-local"],
-form select {
-  width: 100%; /* 输入框全宽 */
-  padding: 10px; /* 内边距 */
-  margin: 10px 0; /* 间距 */
-  border: 1px solid #ccc; /* 边框 */
-  border-radius: 5px; /* 圆角边框 */
-}
-
-form button {
-  width: 100%; /* 按钮全宽 */
-  padding: 10px; /* 内边距 */
-  background-color: #42b983; /* 背景颜色 */
-  color: white; /* 文字颜色 */
-  border: none; /* 无边框 */
-  border-radius: 5px; /* 圆角边框 */
-  cursor: pointer; /* 鼠标样式 */
-  margin: 10px 0;
-}
-
-form button:hover {
-  background-color: #45a049; /* 悬停时背景颜色 */
+.calendar {
+  width: 100%;
 }
 
 /* Different color for different event types. */
@@ -338,5 +231,16 @@ form button:hover {
 .card-text {
   font-size: 14px;
   color: #333;
+}
+
+/* 响应式样式调整 */
+@media (max-width: 600px) {
+  .container {
+    padding: 10px;
+  }
+
+  .vuecal--month-view .vuecal__cell {
+    height: auto; /* 手机上自动调整高度 */
+  }
 }
 </style>

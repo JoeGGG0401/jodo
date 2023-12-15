@@ -8,6 +8,7 @@ import { db } from "../firebase"; // 确保你有一个 db 实例的导出
 
 import HomeView from "../views/HomeView.vue";
 import RecordView from "../views/RecordView.vue";
+import EventFormView from "../views/EventFormView.vue";
 import LoginView from "../views/LoginView.vue";
 import LogoutView from "../views/LogoutView.vue";
 import MySpaceView from '../views/MySpaceView.vue';
@@ -32,6 +33,12 @@ const routes = [
     path: "/record",
     name: "record",
     component: RecordView,
+    meta: { requiresAuth: true }, // 只有认证用户才能访问
+  },
+  {
+    path: "/event-form",
+    name: "event-form",
+    component: EventFormView,
     meta: { requiresAuth: true }, // 只有认证用户才能访问
   },
   {
@@ -69,22 +76,34 @@ const router = createRouter({
   history: createWebHashHistory(),
   routes,
 });
+let isAuthReady = false;  // 用于跟踪认证状态是否准备好
+
+// 监听认证状态改变
+onAuthStateChanged(auth, (user) => {
+  isAuthReady = true;  // 认证状态已准备好
+  if (!user && router.currentRoute.value.meta.requiresAuth) {
+    // 如果用户未登录且当前路由需要认证，则重定向到登录页面
+    router.push('/login');
+  }
+});
 
 router.beforeEach(async (to, from, next) => {
-  const user = auth.currentUser;
+  if (!isAuthReady) {
+    // 认证状态尚未准备好时，等待一段时间
+    await new Promise(resolve => {
+      const checkAuthReady = setInterval(() => {
+        if (isAuthReady) {
+          clearInterval(checkAuthReady);
+          resolve();
+        }
+      }, 100);  // 每 100 毫秒检查一次
+    });
+  }
+
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
-
-  if (requiresAuth && !user) {
-    next("/login");
+  if (requiresAuth && !auth.currentUser) {
+    next('/login');
   } else {
-    if (user) {
-      const userDocRef = doc(db, "users", user.uid);
-      const userDoc = await getDoc(userDocRef);
-      if (!userDoc.exists()) {
-        await setDoc(userDocRef, { email: user.email, name: user.displayName });
-      }
-    }
-
     next();
   }
 });
