@@ -3,7 +3,10 @@
     <h1>我的空间</h1>
 
     <div class="stats-section">
-      <h2>我的状态</h2>
+      <StatCard title="本周工作时间" :value="workTime" />
+      <StatCard title="本周休息时间" :value="restTime" />
+      <StatCard title="本周睡眠时间" :value="sleepTime" />
+
       <div v-if="barChartOption" class="chart-container">
         <EChartsComponent :option="barChartOption" />
       </div>
@@ -13,9 +16,6 @@
       <div v-if="pieChartOption" class="chart-container">
         <EChartsComponent :option="pieChartOption" />
       </div>
-      <StatCard title="本周工作时间" :value="workTime" />
-      <StatCard title="本周休息时间" :value="restTime" />
-      <StatCard title="本周睡眠时间" :value="sleepTime" />
 
     </div>
 
@@ -212,26 +212,49 @@ export default {
 </script>
 
 <style>
-.my-space h2 {
-  margin-top: 20px;
-  color: #333;
+.my-space {
+  max-width: 1200px; /* 最大宽度 */
+  margin: auto; /* 居中 */
+  padding: 20px; /* 内边距 */
 }
 
-.stats-cards {
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  margin-bottom: 20px;
-}
-
-.charts {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
+.stats-section, .users-section {
+  margin-bottom: 30px; /* 分区间隔 */
+  background-color: #f5f5f5; /* 背景色 */
+  padding: 20px; /* 内边距 */
+  border-radius: 10px; /* 圆角 */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 阴影 */
 }
 
 .chart-container {
-  width: 100%;
+  margin-bottom: 20px; /* 图表间隔 */
+}
+
+h1, h2 {
+  color: #333; /* 标题颜色 */
+}
+
+@media (min-width: 600px) {
+  .stats-section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .stat-card {
+    flex-basis: 30%; /* 卡片宽度 */
+    min-width: 250px; /* 最小宽度 */
+    margin-bottom: 20px; /* 间隔 */
+  }
+}
+
+.users-section p {
+  color: #666; /* 文本颜色 */
+}
+
+
+.chart-container {
+  width: 50%;
   height: 400px;
 }
 

@@ -82,29 +82,27 @@ class LogService {
       today.getDate() - 7
     );
     const startDate = lastWeek.toISOString().split("T")[0];
-
-    console.log(`Start Date for Query: ${startDate}`); // 调试：打印开始日期
-
+    const endDate = today.toISOString().split("T")[0];
+  
+    console.log(`Querying stats from ${startDate} to ${endDate}.`); // 调试信息
+  
     const q = query(
       collection(db, "users", userId, "stats"),
       where("date", ">=", startDate),
+      where("date", "<=", endDate), // 添加截止日期条件
       orderBy("date", "desc")
     );
-
-    console.log(`Query: ${JSON.stringify(q)}`); // 调试：打印查询对象
-
+  
     try {
       const querySnapshot = await getDocs(q);
-      console.log(`Number of docs found: ${querySnapshot.docs.length}`); // 调试：打印找到的文档数
-
-      const statsData = querySnapshot.docs.map((doc) => doc.data());
-      console.log("Retrieved stats:", statsData); // 调试：打印检索到的数据
+      const statsData = querySnapshot.docs.map(doc => doc.data());
+      console.log(statsData); // 打印获取到的数据
       return statsData;
     } catch (error) {
       console.error("Error fetching stats:", error);
       return [];
     }
   }
-}
+  }
 
 export default new LogService();
