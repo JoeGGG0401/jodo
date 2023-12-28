@@ -50,7 +50,7 @@
       <input v-model="feelings" type="text" id="feelings" placeholder="感觉" required/>
     </div>
 
-    <button>提交</button>
+    <button @click="submitEvent">提交</button>
     <button @click="goToRecordPage">返回我的记录</button>
   </div>
 </template>

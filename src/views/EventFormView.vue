@@ -4,7 +4,7 @@
       <form @submit.prevent="addEvent">
         <select v-model="newEvent.class">
           <option value="work">工作</option>
-          <option value="break">休息</option>
+          <option value="rest">休息</option>
           <option value="sleep">睡眠</option>
         </select>
 
@@ -44,7 +44,7 @@ export default {
       switch (this.newEvent.class) {
         case "work":
           return WorkEventComponent;
-        case "break":
+        case "rest":
           return RestEventComponent;
         case "sleep":
           return SleepEventComponent;

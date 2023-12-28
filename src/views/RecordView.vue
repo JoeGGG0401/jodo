@@ -147,7 +147,7 @@ export default {
   border: 1px solid rgba(31, 128, 29, 0.9);
   color: #fff;
 }
-.vuecal__event.break {
+.vuecal__event.rest {
   background-color: rgba(223, 212, 18, 0.9);
   border: 1px solid rgba(155, 155, 31, 0.914);
   color: #fff;

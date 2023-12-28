@@ -33,7 +33,7 @@
       <input v-model="recognition" type="text" id="recognition" placeholder="优秀之处" required />
     </div>
 
-    <button type="submit">提交</button>
+    <button @click="submitEvent">提交</button>
     <button @click="goToRecordPage">返回我的记录</button>
   </div>
 </template>

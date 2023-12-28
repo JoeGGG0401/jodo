@@ -67,7 +67,7 @@
       />
     </div>
 
-      <button>提交</button>
+    <button @click="submitEvent">提交</button>
       <button @click="goToRecordPage">返回我的记录</button>
 
   </div>
@@ -122,7 +122,7 @@ export default {
       // 触发事件并传递数据
       this.$emit("submit", {
         title: "休息记录",
-        class: "break",
+        class: "rest",
         start: this.startTime,
         end: this.endTime,
         contentFull: contentFull,

@@ -9,11 +9,13 @@
   "dependencies": {
     "@kangc/v-md-editor": "^2.3.18",
     "core-js": "^3.8.3",
+    "echarts": "^5.4.3",
     "firebase": "^10.7.0",
     "markdown-it": "^14.0.0",
     "moment": "^2.29.4",
     "vue": "^3.2.13",
     "vue-cal": "^4.8.1",
+    "vue-echarts": "^6.6.8",
     "vue-router": "^4.0.3"
   },
   "devDependencies": {
