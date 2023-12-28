@@ -90,11 +90,11 @@ export default {
 
       // 将答案格式化为统一的内容
       const contentFull = `
-        ## 睡眠记录
-        - 睡前准备: ${this.preparation}
-        - 起床门槛行动: ${this.thresholdAction}
-        - 起来后准备做: ${this.planAfterWaking}
-        - 感觉: ${this.feelings}
+        睡眠记录 \n\n
+        - 睡前准备: ${this.preparation} \n\n
+        - 起床门槛行动: ${this.thresholdAction} \n\n
+        - 起来后准备做: ${this.planAfterWaking} \n\n
+        - 感觉: ${this.feelings} \n\n
         `;
 
       // 触发事件并传递数据

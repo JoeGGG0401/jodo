@@ -12,7 +12,6 @@
           :is="currentEventComponent"
           @submit="handleEventSubmit"
         ></component>
-        <div v-show="submitSuccess" class="submit-success">记录添加成功!</div>
       </form>
     </div>
   </div>
@@ -36,7 +35,6 @@ export default {
         class: "work",
         contentFull: "",
       },
-      submitSuccess: false,
     };
   },
   computed: {
@@ -77,9 +75,9 @@ export default {
 
           await LogService.createLog(user.uid, data);
           console.info("Adding event Complete!");
-          this.submitSuccess = true; // 设置成功标志
-          setTimeout(() => (this.submitSuccess = false), 3000); // 3秒后隐藏消息
-          this.resetNewEvent(); // 成功后重置表单
+          if(confirm("记录添加成功！")) {
+            this.resetNewEvent(); // 成功后重置表单
+          }
         }
       } catch (e) {
         console.error("Error adding event: ", e);

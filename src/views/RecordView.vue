@@ -54,6 +54,10 @@
               <p v-html="selectedEvent.contentFull"></p>
             </ul>
           </div>
+
+          <div class="card-actions">
+            <button @click="deleteLog(selectedEvent.id)">删除</button>
+          </div>
         </div>
       </div>
     </div>
@@ -65,7 +69,7 @@ import VueCal from "vue-cal";
 import "vue-cal/dist/vuecal.css";
 import moment from "moment";
 import LogService from "../services/LogService";
-import { auth } from "../firebase"; // 确保路径正确
+import { auth } from "../firebase"; 
 
 export default {
   components: {
@@ -114,6 +118,19 @@ export default {
         console.error("Error fetching events: ", error);
       }
     },
+    async deleteLog(logId) {
+      console.log(logId);
+      if (!confirm("确定要删除这条记录吗？")) return;
+
+      try {
+        // 调用 LogService 中的方法来删除日志
+        await LogService.deleteLog(auth.currentUser.uid, logId);
+        this.fetchEvents(); // 重新获取事件更新视图
+        this.closeDialog(); // 关闭对话框
+      } catch (error) {
+        console.error("Error deleting log:", error);
+      }
+    },
   },
 };
 </script>
@@ -142,18 +159,18 @@ export default {
 }
 
 /* Different color for different event types. */
-.vuecal__event.work {
-  background-color: rgba(39, 184, 37, 0.9);
+.vuecal__event.rest {
+  background-color: #92cc76;
   border: 1px solid rgba(31, 128, 29, 0.9);
   color: #fff;
 }
-.vuecal__event.rest {
-  background-color: rgba(223, 212, 18, 0.9);
+.vuecal__event.sleep {
+  background-color: #fac858;
   border: 1px solid rgba(155, 155, 31, 0.914);
   color: #fff;
 }
-.vuecal__event.sleep {
-  background-color: rgba(102, 204, 255, 0.9);
+.vuecal__event.work {
+  background-color: #5470c6;
   border: 1px solid rgba(35, 123, 168, 0.9);
   color: #fff;
 }

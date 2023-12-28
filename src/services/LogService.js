@@ -9,6 +9,7 @@ import {
   orderBy,
   getDoc,
   updateDoc,
+  deleteDoc,
   setDoc,
 } from "firebase/firestore";
 
@@ -19,6 +20,50 @@ class LogService {
       collection(db, "users", userId, "logs")
     );
     return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+  }
+
+  // 删除日志并更新统计数据
+  async deleteLog(userId, logId) {
+    // 首先获取日志数据
+    const logRef = doc(db, "users", userId, "logs", logId);
+    const logSnap = await getDoc(logRef);
+    if (!logSnap.exists()) {
+      console.error("Log not found");
+      return;
+    }
+
+    const logData = logSnap.data();
+    const duration = this.calculateDuration(logData.start, logData.end);
+
+    // 删除日志
+    await deleteDoc(logRef);
+
+    // 更新统计数据
+    await this.updateStatsAfterDeletion(userId, logData, duration);
+  }
+
+  // 计算日志的持续时间
+  calculateDuration(start, end) {
+    const startDateTime = new Date(start);
+    const endDateTime = new Date(end);
+    return (endDateTime - startDateTime) / (1000 * 60 * 60); // 将毫秒转换为小时
+  }
+
+  // 在日志删除后更新统计数据
+  async updateStatsAfterDeletion(userId, logData, duration) {
+    const date = new Date(logData.start).toISOString().split("T")[0];
+    const statsRef = doc(db, "users", userId, "stats", date);
+
+    const statsSnap = await getDoc(statsRef);
+    if (statsSnap.exists()) {
+      const currentStats = statsSnap.data();
+      currentStats[logData.class] =
+        (currentStats[logData.class] || 0) - duration;
+      if (currentStats[logData.class] < 0) {
+        currentStats[logData.class] = 0; // 防止负数
+      }
+      await updateDoc(statsRef, currentStats);
+    }
   }
 
   // 更新或创建统计数据
@@ -83,19 +128,19 @@ class LogService {
     );
     const startDate = lastWeek.toISOString().split("T")[0];
     const endDate = today.toISOString().split("T")[0];
-  
+
     console.log(`Querying stats from ${startDate} to ${endDate}.`); // 调试信息
-  
+
     const q = query(
       collection(db, "users", userId, "stats"),
       where("date", ">=", startDate),
       where("date", "<=", endDate), // 添加截止日期条件
       orderBy("date", "desc")
     );
-  
+
     try {
       const querySnapshot = await getDocs(q);
-      const statsData = querySnapshot.docs.map(doc => doc.data());
+      const statsData = querySnapshot.docs.map((doc) => doc.data());
       console.log(statsData); // 打印获取到的数据
       return statsData;
     } catch (error) {
@@ -103,6 +148,6 @@ class LogService {
       return [];
     }
   }
-  }
+}
 
 export default new LogService();

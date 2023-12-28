@@ -112,12 +112,12 @@ export default {
 
       // 将答案格式化为统一的内容
       const contentFull = `
-        ## 休息记录
-        - 刚才在做什么: ${this.recentActivity}.
-        - 休息方式: ${this.restMethod}.
-        - 收尾动作: ${this.finalAction}.
-        - 准备继续什么工作: ${this.nextWork}.
-        - 门槛行动: ${this.thresholdAction}.
+        休息记录 \n\n
+        - 刚才在做什么: ${this.recentActivity}. \n\n
+        - 休息方式: ${this.restMethod}. \n\n
+        - 收尾动作: ${this.finalAction}. \n\n
+        - 准备继续什么工作: ${this.nextWork}. \n\n
+        - 门槛行动: ${this.thresholdAction}. \n\n
         `;
       // 触发事件并传递数据
       this.$emit("submit", {

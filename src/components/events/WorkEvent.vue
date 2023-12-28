@@ -74,11 +74,11 @@ export default {
 
       // 将答案格式化为统一的内容
       const contentFull = `
-        ## 工作记录
-        - 任务内容: ${this.task}.
-        - 工作持续时间: ${this.duration}.
-        - 感受: ${this.observation}.
-        - 优秀之处: ${this.recognition}
+        工作记录 \n\n
+        - 任务内容: ${this.task}. \n\n
+        - 工作持续时间: ${this.duration}. \n\n
+        - 感受: ${this.observation}. \n\n
+        - 优秀之处: ${this.recognition} \n\n
         `;
       // 触发事件并传递数据
       this.$emit("submit", {
