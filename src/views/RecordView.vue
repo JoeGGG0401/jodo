@@ -170,7 +170,7 @@ export default {
   color: #fff;
 }
 .vuecal__event.work {
-  background-color: #5470c6;
+  background-color: rgba(102, 204, 255, 0.9);
   border: 1px solid rgba(35, 123, 168, 0.9);
   color: #fff;
 }

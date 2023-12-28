@@ -22,6 +22,26 @@ class LogService {
     return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
   }
 
+  async getLogsByDate(userId, date) {
+    const startOfDay = new Date(date);
+    startOfDay.setHours(0, 0, 0, 0);
+    const startOfDayString = startOfDay.toISOString(); // 转换为 ISO 格式的字符串
+  
+    const endOfDay = new Date(date);
+    endOfDay.setHours(23, 59, 59, 999);
+    const endOfDayString = endOfDay.toISOString(); // 转换为 ISO 格式的字符串
+  
+    const q = query(
+      collection(db, "users", userId, "logs"),
+      where("start", ">=", startOfDayString),
+      where("start", "<=", endOfDayString)
+    );
+  
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+  }
+    
+
   // 删除日志并更新统计数据
   async deleteLog(userId, logId) {
     // 首先获取日志数据

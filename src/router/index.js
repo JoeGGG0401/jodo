@@ -14,7 +14,7 @@ import LogoutView from "../views/LogoutView.vue";
 import MySpaceView from '../views/MySpaceView.vue';
 import SearchResultView from '../views/SearchResultView.vue';
 import UserProfileView from '../views/UserProfileView.vue';
-
+import MessageView from '../views/MessageView.vue';
 
 
 const routes = [
@@ -45,6 +45,12 @@ const routes = [
     path: "/myspace",
     name: "myspace",
     component: MySpaceView,
+    meta: { requiresAuth: true }, // 只有认证用户才能访问
+  },
+  {
+    path: "/message",
+    name: "message",
+    component: MessageView,
     meta: { requiresAuth: true }, // 只有认证用户才能访问
   },
   {
