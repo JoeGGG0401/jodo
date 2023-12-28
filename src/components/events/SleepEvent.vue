@@ -3,51 +3,54 @@
     <h3>睡眠记录</h3>
 
     <div class="form-group">
-      <label for="startTime">开始时间:</label>
-      <input v-model="startTime" type="datetime-local" id="startTime" />
+      <label for="startTime">开始时间: <span class="required">*</span></label>
+      <input v-model="startTime" type="datetime-local" id="startTime" required/>
     </div>
 
     <div class="form-group">
-      <label for="endTime">结束时间:</label>
-      <input v-model="endTime" type="datetime-local" id="endTime" />
+      <label for="endTime">结束时间: <span class="required">*</span></label>
+      <input v-model="endTime" type="datetime-local" id="endTime" required/>
     </div>
 
     <div class="form-group">
-      <label for="preparation">睡前准备:</label>
+      <label for="preparation">睡前准备: <span class="required">*</span></label>
       <input
         v-model="preparation"
         type="text"
         id="preparation"
         placeholder="睡前准备"
+        required
       />
     </div>
 
     <div class="form-group">
-      <label for="thresholdAction">起床门槛行动:</label>
+      <label for="thresholdAction">起床门槛行动: <span class="required">*</span></label>
       <input
         v-model="thresholdAction"
         type="text"
         id="thresholdAction"
         placeholder="起床门槛行动"
+        required
       />
     </div>
 
     <div class="form-group">
-      <label for="planAfterWaking">起来后准备做:</label>
+      <label for="planAfterWaking">起来后准备做: <span class="required">*</span></label>
       <input
         v-model="planAfterWaking"
         type="text"
         id="planAfterWaking"
         placeholder="起来后准备做"
+        required
       />
     </div>
 
     <div class="form-group">
-      <label for="feelings">感觉:</label>
-      <input v-model="feelings" type="text" id="feelings" placeholder="感觉" />
+      <label for="feelings">感觉: <span class="required">*</span></label>
+      <input v-model="feelings" type="text" id="feelings" placeholder="感觉" required/>
     </div>
 
-    <button @click="submitEvent">提交</button>
+    <button>提交</button>
     <button @click="goToRecordPage">返回我的记录</button>
   </div>
 </template>
@@ -143,5 +146,8 @@ export default {
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
+}
+.required {
+  color: red;
 }
 </style>

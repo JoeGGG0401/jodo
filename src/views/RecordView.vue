@@ -9,7 +9,7 @@
         class="vuecal--green-theme"
         events-on-month-view="short"
         :events="events"
-        :disable-views="['years', 'year']"
+        :disable-views="['years', 'year', 'month']"
         :time-from="0 * 60"
         :time-to="24 * 60"
         :dbl-click-to-navigate="false"

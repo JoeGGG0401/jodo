@@ -3,56 +3,42 @@
     <h3>工作记录</h3>
 
     <div class="form-group">
-      <label for="startTime">开始时间:</label>
-      <input v-model="startTime" type="datetime-local" id="startTime" />
+      <label for="startTime">开始时间: <span class="required">*</span></label>
+      <input v-model="startTime" type="datetime-local" id="startTime" required />
     </div>
 
     <div class="form-group">
-      <label for="endTime">结束时间:</label>
-      <input v-model="endTime" type="datetime-local" id="endTime" />
+      <label for="endTime">结束时间: <span class="required">*</span></label>
+      <input v-model="endTime" type="datetime-local" id="endTime" required />
     </div>
 
     <!-- 问卷式输入 -->
     <div class="form-group">
-      <label for="task">你完成了哪项任务？</label>
-      <input v-model="task" type="text" id="task" placeholder="任务内容" />
+      <label for="task">你完成了哪项任务？ <span class="required">*</span></label>
+      <input v-model="task" type="text" id="task" placeholder="任务内容" required />
     </div>
 
     <div class="form-group">
-      <label for="duration">花费了多长时间？</label>
-      <input
-        v-model="duration"
-        type="text"
-        id="duration"
-        placeholder="持续时间"
-      />
+      <label for="duration">花费了多长时间？ <span class="required">*</span></label>
+      <input v-model="duration" type="text" id="duration" placeholder="持续时间" required />
     </div>
 
     <div class="form-group">
-      <label for="observation">你的感受如何？</label>
-      <input
-        v-model="observation"
-        type="text"
-        id="observation"
-        placeholder="感受"
-      />
+      <label for="observation">你的感受如何？ <span class="required">*</span></label>
+      <input v-model="observation" type="text" id="observation" placeholder="感受" required />
     </div>
 
     <div class="form-group">
-      <label for="recognition">你做得最好的部分是什么？</label>
-      <input
-        v-model="recognition"
-        type="text"
-        id="recognition"
-        placeholder="优秀之处"
-      />
+      <label for="recognition">你做得最好的部分是什么？ <span class="required">*</span></label>
+      <input v-model="recognition" type="text" id="recognition" placeholder="优秀之处" required />
     </div>
 
-    <button @click="submitEvent">提交</button>
+    <button type="submit">提交</button>
     <button @click="goToRecordPage">返回我的记录</button>
-
   </div>
 </template>
+
+
 
 <script>
 import moment from "moment";
@@ -144,4 +130,9 @@ export default {
   border-radius: 4px;
   box-sizing: border-box;
 }
+
+.required {
+  color: red;
+}
+
 </style>

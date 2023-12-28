@@ -58,6 +58,8 @@ export default {
     },
 
     async addEvent() {
+      console.log("addEvent called");
+
       try {
         const user = auth.currentUser;
         if (user) {
@@ -77,14 +79,12 @@ export default {
           console.info("Adding event Complete!");
           this.submitSuccess = true; // 设置成功标志
           setTimeout(() => (this.submitSuccess = false), 3000); // 3秒后隐藏消息
+          this.resetNewEvent(); // 成功后重置表单
         }
       } catch (e) {
         console.error("Error adding event: ", e);
         this.submitSuccess = false;
       }
-
-      // 重置表单
-      this.resetNewEvent();
     },
 
     resetNewEvent() {

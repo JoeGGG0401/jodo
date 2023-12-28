@@ -3,66 +3,71 @@
     <h3>休息记录</h3>
 
     <div class="form-group">
-      <label for="startTime">开始时间:</label>
-      <input v-model="startTime" type="datetime-local" id="startTime" />
+      <label for="startTime">开始时间: <span class="required">*</span></label>
+      <input v-model="startTime" type="datetime-local" id="startTime" required/>
     </div>
 
     <div class="form-group">
-      <label for="endTime">结束时间:</label>
-      <input v-model="endTime" type="datetime-local" id="endTime" />
+      <label for="endTime">结束时间: <span class="required">*</span></label>
+      <input v-model="endTime" type="datetime-local" id="endTime" required>
     </div>
 
     <div class="form-group">
-      <label for="recentActivity">刚才在做什么:</label>
+      <label for="recentActivity">刚才在做什么: <span class="required">*</span></label>
       <input
         v-model="recentActivity"
         type="text"
         id="recentActivity"
         placeholder="刚才在做什么"
+        required
       />
     </div>
 
     <div class="form-group">
-      <label for="restMethod">休息方式:</label>
+      <label for="restMethod">休息方式: <span class="required">*</span></label>
       <input
         v-model="restMethod"
         type="text"
         id="restMethod"
         placeholder="休息方式(低刺激)"
+        required
       />
     </div>
 
     <div class="form-group">
-      <label for="finalAction">收尾动作:</label>
+      <label for="finalAction">收尾动作: <span class="required">*</span></label>
       <input
         v-model="finalAction"
         type="text"
         id="finalAction"
         placeholder="收尾动作"
+        required
       />
     </div>
 
     <div class="form-group">
-      <label for="nextWork">准备继续什么工作:</label>
+      <label for="nextWork">准备继续什么工作: <span class="required">*</span></label>
       <input
         v-model="nextWork"
         type="text"
         id="nextWork"
         placeholder="准备继续什么工作"
+        required
       />
     </div>
 
     <div class="form-group">
-      <label for="thresholdAction">门槛行动:</label>
+      <label for="thresholdAction">门槛行动: <span class="required">*</span></label>
       <input
         v-model="thresholdAction"
         type="text"
         id="thresholdAction"
         placeholder="门槛行动"
+        required
       />
     </div>
 
-      <button @click="submitEvent">提交</button>
+      <button>提交</button>
       <button @click="goToRecordPage">返回我的记录</button>
 
   </div>
@@ -100,6 +105,8 @@ export default {
     },
 
     submitEvent() {
+      console.log("submitEvent called");
+
       const formattedStart = this.formatDateTime(this.startTime);
       const formattedEnd = this.formatDateTime(this.endTime);
 
@@ -161,5 +168,8 @@ export default {
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
+}
+.required {
+  color: red;
 }
 </style>
