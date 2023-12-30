@@ -64,7 +64,7 @@ function generatePrompt(logs) {
       log.start
     }, 结束: ${log.end})\n`;
   });
-  prompt += "基于这些活动，请给用户一些正面的反馈和建议。\n";
+  prompt += "基于这些活动，请给用户一些反馈和建议。请指出问题，然后给予鼓励，字数控制在 50 字内。\n";
   return prompt;
 }
 
